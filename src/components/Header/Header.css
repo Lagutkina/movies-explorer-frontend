@@ -1,0 +1,122 @@
+.header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 14px;
+    width: 100%; 
+    box-sizing: border-box;
+    min-height: 74px; 
+}
+
+.header__logo{
+    background-size: cover;
+    height: 38px;
+    width: 38px;
+}
+.header__main-navigation {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 16px;
+}
+
+.header__signup-link{
+    margin-right:14px ;
+    color: #000;
+    text-decoration: none;
+}
+.header__signup-link:hover{
+    cursor: pointer;
+  opacity: .7;
+}
+.header__login-button{
+    color:#fff; 
+    background-color: #000;
+    width: 54px;
+    height: 26px;
+    border-radius: 3px;
+    text-align: center;
+    line-height: 26px;
+    text-decoration: none;
+ 
+}
+.header__login-button:hover{
+cursor: pointer;
+  opacity: .7;
+}
+
+.header__menu{
+   height: 43px;
+   width: 40px;
+}
+.header__menu:hover{
+    opacity: .7;
+    cursor: pointer;
+
+}
+
+.header__logged-navigation{
+    display: none;
+    flex-grow: 1;
+    margin-left: 44px;
+    font-size: 13px;
+    line-height: 18px;
+    text-align: right;
+    gap: 16px;
+}
+.header__logged-navigation:hover{
+    opacity: .7;
+    cursor: pointer;
+}
+
+.header__account-btn{
+    width: 100px;
+    display: none;
+}
+.header__navigation-link{
+    text-decoration: none;
+    color: #000;
+}
+.header__navigation-link_active{
+    text-decoration: underline 2px;
+    text-underline-offset: 7px;
+}
+@media screen and (min-width:768px) {
+    .header{
+        padding: 0 30px;
+    }
+    .header__signup-link{
+        margin-right: 30px ;
+    }
+    .header__navigation{
+        font-size: 12px;
+    }
+    .header__login-button{
+        width: 76px;
+    height: 32px;
+    line-height: 32px;
+    }
+    .header__menu{
+        height: 44px;
+        width: 44px;
+     }
+}
+
+@media screen and (min-width:1280px) {
+    .header{
+        padding: 0 70px;
+    }
+    .header__menu{
+        display: none;
+    }
+    .header__logged-navigation{
+        display: flex;
+    }
+    .header__account-btn{
+        display: flex;
+    }
+}

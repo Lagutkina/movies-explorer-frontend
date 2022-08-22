@@ -1,0 +1,137 @@
+.aboutme{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    padding: 70px 14px;
+    box-sizing: border-box;    
+}
+
+.aboutme__profile-wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin: 60px 0 0;
+    gap: 40px;
+}
+.aboutme__profile{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.aboutme__name{
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 36px;
+    letter-spacing: -0.04em;
+    margin: 0;
+}
+
+.aboutme__info{
+    flex-grow: 1;
+}
+.aboutme__info-title{
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 16px;
+    margin: 20px 0;
+}
+
+.aboutme__description{
+    font-style: normal;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 16px;
+    mix-blend-mode: normal;
+    margin: 0;
+
+}
+.aboutme__photo{
+    width: 100%;
+    max-width: 292px;
+    height: 352px;
+    object-fit: cover;
+    border-radius: 10px;
+    
+    
+}
+.aboutme__profile-links{
+    display: flex;
+    gap: 26px; 
+    margin: 40px 0 0;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    
+}
+.aboutme__profile-link:hover{
+    cursor: pointer;
+    opacity: .7;
+}
+
+@media screen and (min-width:768px) {
+    .aboutme__profile-wrapper{
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: stretch;
+        margin-top: 66px;
+        gap: 49px;
+    }
+    .aboutme{
+        padding: 90px 50px;
+    }
+    .aboutme__name{
+        font-size: 40px;
+        line-height: 40px;
+    }
+    .aboutme__info-title{
+        font-size: 12px;
+        line-height: 18px;
+        margin: 16px 0 20px
+    }
+    .aboutme__description{
+        font-size: 12px;
+        line-height: 18px;
+    }
+    .aboutme__photo{
+        width: 255px;
+        height: 307    px;
+    }
+
+    .aboutme__profile-links{
+        gap: 20px; 
+       
+    }
+}
+.aboutme__profile-link_item{
+    color: #000;
+    text-decoration: none;
+}
+
+@media screen and (min-width:1280px) {
+    .aboutme{
+        padding: 110px 70px 101px;
+    }
+    .aboutme__profile-wrapper{
+        gap: 270px;
+    }
+    .aboutme__name{
+        font-size: 50px;
+        line-height: 58px;
+    }
+    .aboutme__info-title{
+        font-size: 18px;
+        line-height: 20px;
+        margin: 18px 0 26px
+    }
+    .aboutme__description{
+        font-size: 14px;
+        line-height: 22px;
+    }
+    .aboutme__photo{
+        width: 270px;
+        height: 327px;
+    }
+}
+    

@@ -1,0 +1,51 @@
+.input__field{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.input__label{
+    font-style: normal;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 12px;
+    color: #A0A0A0;
+}
+.input{
+    width: 100%;
+    padding: 0;
+    border: 0;
+    height: 46px;
+    background: #F9F9F9;
+    border-radius: 8px;
+    margin: 10px 0;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 16px;
+    padding: 15px;
+    box-sizing: border-box;
+    
+}
+
+.input:focus{
+    outline: 1.5px solid #2BE080;
+    font-weight: 500;
+
+}
+
+.input_error{
+    color: #FF4062;
+}
+.input_error:focus{
+    outline: 1.5px solid #FF4062;
+    font-weight: 500;
+
+}
+
+.input__message{
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 12px;
+    color: #FF4062;
+    margin-bottom: 10px;
+}

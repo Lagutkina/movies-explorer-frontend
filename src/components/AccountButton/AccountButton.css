@@ -1,0 +1,35 @@
+.account-btn{
+    background: #FFFFFF;
+box-shadow: 0px 3px 14px rgba(0, 0, 0, 0.08);
+border-radius: 40px;
+width:100%;
+height: 32px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding-left : 11px;
+padding-right: 3px;
+font-style: normal;
+font-weight: 500;
+font-size: 13px;
+line-height: 12px;
+box-sizing: border-box;
+}
+.account-btn__iconframe{
+background: #F9F9F9;
+border-radius: 50px;
+height: 26px;
+width: 26px;
+display: flex;
+justify-content: center;
+padding: 7.75px 7.81px 7.58px;
+box-sizing: border-box;
+margin-left: 7px;
+}
+
+.account-btn:hover{
+    opacity: .7;
+    cursor: pointer;
+}
+
+
