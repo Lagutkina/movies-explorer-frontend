@@ -1,0 +1,121 @@
+.about-project{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 70px 18px ;
+    box-sizing: border-box;
+}
+
+.about-project__description{
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+    margin-top: 60px;
+   justify-content: space-between;
+}
+
+.about-project__column-title{
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+    letter-spacing: -0.04em;
+    margin: 0 0 16px;
+}
+
+.about-project__paragraph{
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 16px; 
+    margin: 0;
+}
+
+.about-project__timebar{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-top: 60px;
+}
+
+.about-project__week{
+width: 100%;
+font-size: 11px;
+line-height: 13px;
+font-weight: 400;
+text-align: center;
+color: #A0A0A0;
+}
+
+.about-project__week-header{
+background-color: #F2F2F2;
+display: flex;
+justify-content: center;
+align-items: center;
+height: 36px;
+color: black;
+}
+.about-project__week_black{
+    width: 100px;
+}
+.about-project__week-header_black{
+    background-color: black;
+    color: #FFFFFF;
+}
+
+.about-project__week-description{
+    margin: 10px 0 0;
+}
+
+@media screen and (min-width:768px) {
+    .about-project{
+        padding: 90px 50px ;
+    }
+    .about-project__description{
+       flex-direction: row;
+       margin-top: 70px;
+       gap: 30px;
+    }
+    .about-project__column-title{
+        font-size: 20px;
+        line-height: 24px;
+        margin-bottom: 22px;
+    }
+    .about-project__paragraph{
+        font-size: 12px;
+        line-height: 18px; 
+    } 
+    .about-project__timebar{
+        margin-top: 93px;
+    }
+    .about-project__week_black{
+        width: 140px;
+    }
+    .about-project__week{
+        font-size: 14px;
+        line-height: 17px;
+}
+.about-project__week-description{
+    margin: 14px 0 0;
+}
+}
+@media screen and (min-width:1280px) {
+    .about-project{
+        padding: 110px 70px;
+    }
+    .about-project__description{
+        gap: 40px;
+     }
+     .about-project__column-title{
+        margin-bottom: 26px;
+    }
+    .about-project__paragraph{
+        font-size: 14px;
+        line-height: 20px;
+    } 
+    .about-project__timebar{
+        margin-top: 110px;
+    }
+    .about-project__week_black{
+        width: 228px;
+    }
+   
+}
