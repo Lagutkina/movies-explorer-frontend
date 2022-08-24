@@ -10,9 +10,9 @@ function Register(props) {
       link="Войти"
       linkTo="/signin"
     >
-      <Input name="Имя" type="text" />
+      <Input name="Имя" type="text" minlength="6" maxlength="30" />
       <Input name="E-mail" type="email" />
-      <Input name="Пароль" type="password" message="Что-то пошло не так..." />
+      <Input name="Пароль" type="password" minlength="6" />
     </WelcomeForm>
   );
 }

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import './App.css';
 import { Route, Switch } from 'react-router-dom';
 import Main from '../Main/Main';
@@ -9,8 +10,16 @@ import Register from '../Register/Register';
 import Login from '../Login/Login';
 import Profile from '../Profile/Profile';
 import PageNotFound from '../PageNotFound/PageNotFound';
+import moviesApi from '../../utils/MoviesApi';
+import filterMovies from '../../utils/filter';
 
 function App() {
+  useEffect(() => {
+    moviesApi.getMovies().then((movies) => {
+      console.log(movies);
+      console.log(filterMovies(movies, 'Нидерланды', false));
+    });
+  }, []);
   return (
     <div className="page">
       <div className="page__content">

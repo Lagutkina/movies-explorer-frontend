@@ -11,7 +11,7 @@ function Login(props) {
       linkTo="/signup"
     >
       <Input name="E-mail" type="email" />
-      <Input name="Пароль" type="password" />
+      <Input name="Пароль" type="password" minlength="6" />
     </WelcomeForm>
   );
 }
