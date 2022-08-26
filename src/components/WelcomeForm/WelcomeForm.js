@@ -3,7 +3,7 @@ import headerLogo from '../../images/headerLogo.svg';
 import Link from '../Link/Link';
 function WelcomeForm(props) {
   return (
-    <div className="welcomeform">
+    <main className="welcomeform">
       <form className="welcomeform__form" onSubmit={props.onSubmit}>
         <div className="welcomeform__title-wrapper">
           <img className="welcomeform__logo" alt="логотип" src={headerLogo} />
@@ -25,7 +25,7 @@ function WelcomeForm(props) {
           </div>
         </div>
       </form>
-    </div>
+    </main>
   );
 }
 

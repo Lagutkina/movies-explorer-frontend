@@ -28,13 +28,12 @@ function Profile(props) {
     props
       .onUpdate(values.name, values.email)
       .then((res) => {
-        console.log(res);
         setIsEdit(false);
       })
       .catch((err) => console.log(err));
   }
   return (
-    <section className="profile">
+    <main className="profile">
       <div className="profile__wrapper">
         <h2 className="profile__title">Привет, {currentUser.name}!</h2>
         <div className="profile__info">
@@ -92,7 +91,7 @@ function Profile(props) {
           </p>
         </div>
       </div>
-    </section>
+    </main>
   );
 }
 export default Profile;

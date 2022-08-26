@@ -9,7 +9,7 @@ function SavedMovies(props) {
     props.onSearch(SAVED, ...args);
   };
   return (
-    <section className="saved-movies">
+    <main className="saved-movies">
       <SearchForm onSearch={handleSearch} />
       {props.movies && !props.isLoading && (
         <MoviesCardList
@@ -21,7 +21,7 @@ function SavedMovies(props) {
         />
       )}
       {props.isLoading && <Preloader />}
-    </section>
+    </main>
   );
 }
 export default SavedMovies;

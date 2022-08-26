@@ -1,3 +1,4 @@
+import { TOKEN } from '../utils/constants';
 class MainApi {
   constructor(options) {
     this._baseUrl = options.baseUrl;
@@ -24,7 +25,7 @@ class MainApi {
   signUp(userData) {
     return this._fetch('POST', 'signup', userData).then((data) => {
       if (data.token) {
-        localStorage.setItem('token', data.token);
+        localStorage.setItem(TOKEN, data.token);
         this._token = data.token;
       }
       return data;
@@ -34,7 +35,7 @@ class MainApi {
   signIn(userData) {
     return this._fetch('POST', 'signin', userData).then((data) => {
       if (data.token) {
-        localStorage.setItem('token', data.token);
+        localStorage.setItem(TOKEN, data.token);
         this._token = data.token;
       }
       return data;
@@ -67,6 +68,6 @@ class MainApi {
 }
 
 export default new MainApi({
-  baseUrl: 'http://localhost:3002',
-  token: localStorage.getItem('token'),
+  baseUrl: 'https://api.lagutkina.nomoredomains.sbs',
+  token: localStorage.getItem(TOKEN),
 });

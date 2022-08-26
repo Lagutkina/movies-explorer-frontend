@@ -3,20 +3,9 @@ import debounce from '../../utils/debounce';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import './MoviesCardList.css';
 import LoadMoreButton from '../LoadMoreButton/LoadMoreButton';
+import { calcDisplayParams } from '../../utils/calcDisplayParams';
+//рассчитываем шиирину экрана и количество карточек
 
-function calcDisplayParams() {
-  const width = window.innerWidth;
-  if (width <= 604) {
-    return [5, 2];
-  }
-  if (width <= 943) {
-    return [8, 2];
-  }
-  if (width <= 1245) {
-    return [12, 3];
-  }
-  return [16, 4];
-}
 function MoviesCardList(props) {
   const [displayParams, setDisplayParams] = useState(calcDisplayParams());
   const [initialAmount, additionalAmount] = displayParams;
@@ -25,7 +14,7 @@ function MoviesCardList(props) {
 
   // Скрытие кнопки когда не нужна
   const hideButton = !props.movies || props.movies.length <= showAmount;
-
+  const showMessage = props.movies && props.movies.length === 0;
   useEffect(() => {
     // реакция на изменения размеров экрана
     const handleResize = () => setDisplayParams(calcDisplayParams());
@@ -49,13 +38,16 @@ function MoviesCardList(props) {
                 onCardClick={props.onCardClick}
                 onCardLike={props.onCardLike}
                 onCardDelete={props.onCardDelete}
-                key={card._id || card.id}
+                key={card.movieId || card.id}
                 isLiked={savedMoviesIds.indexOf(card.movieId) !== -1}
                 onLike={props.onLike}
                 onRemove={props.onRemove}
               />
             ))}
       </section>
+      {showMessage && (
+        <p className="movies-cardlist__message">Ничего не найдено</p>
+      )}
       {!hideButton && (
         <LoadMoreButton
           onClick={() => setShowAmount(showAmount + additionalAmount)}

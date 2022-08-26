@@ -10,7 +10,7 @@ function Movies(props) {
     props.onSearch(MOVIES, ...args);
   };
   return (
-    <section className="movies">
+    <main className="movies">
       <SearchForm
         onSearch={handleSearch}
         term={props.searchTerm}
@@ -28,7 +28,7 @@ function Movies(props) {
       )}
 
       {props.isLoading && <Preloader />}
-    </section>
+    </main>
   );
 }
 

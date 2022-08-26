@@ -8,6 +8,12 @@ function SearchForm(props) {
   function handleInputChange(evt) {
     setValue(evt.target.value);
   }
+  function handleCheckboxChange(evt) {
+    if (value) {
+      props.onSearch(value, !activeCheckbox);
+    }
+    setActiveCheckbox(!activeCheckbox);
+  }
 
   return (
     <form
@@ -43,7 +49,7 @@ function SearchForm(props) {
           className={`search-form__filter-checkbox ${
             !activeCheckbox ? 'search-form__filter-checkbox_off' : ''
           }`}
-          onClick={() => setActiveCheckbox(!activeCheckbox)}
+          onClick={handleCheckboxChange}
         ></div>
         <p className="search-form__filter-checkbox-title">Короткометражки</p>
       </div>

@@ -16,44 +16,23 @@ import mainApi from '../../utils/MainApi';
 import filterMovies from '../../utils/filter';
 import ToolTip from '../ToolTip/ToolTip';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-
-import { MOVIES, SAVED } from '../../utils/constants';
+import { setMoviesCache, getMoviesCache } from '../../utils/moviesCache';
+import {
+  MOVIES,
+  SAVED,
+  MOVIES_CACHE_KEY,
+  MOVIES_CACHE_SEARCH_TERM_KEY,
+  TOKEN,
+} from '../../utils/constants';
 
 import './App.css';
-
-const MOVIES_CACHE_KEY = 'movies';
-const MOVIES_CACHE_SEARCH_TERM_KEY = 'movies-term';
-const MOVIES_CACHE_SEARCH_CHECK = 'movies-check';
-
-const setMoviesCache = (movies, searchTerm, isShort) => {
-  localStorage.setItem(MOVIES_CACHE_SEARCH_TERM_KEY, searchTerm);
-  localStorage.setItem(MOVIES_CACHE_SEARCH_CHECK, isShort);
-  localStorage.setItem(MOVIES_CACHE_KEY, JSON.stringify(movies));
-  console.log(localStorage.getItem(MOVIES_CACHE_KEY));
-  console.log(localStorage.getItem(MOVIES_CACHE_SEARCH_TERM_KEY));
-};
-
-const getMoviesCache = () => {
-  try {
-    const movies = JSON.parse(localStorage.getItem(MOVIES_CACHE_KEY));
-    const searchTerm = localStorage.getItem(MOVIES_CACHE_SEARCH_TERM_KEY);
-    const isShort = localStorage.getItem(MOVIES_CACHE_SEARCH_CHECK);
-    if (!Array.isArray(movies)) {
-      throw new Error();
-    }
-    return { movies, searchTerm, isShort };
-  } catch (e) {
-    localStorage.removeItem(MOVIES_CACHE_KEY);
-    localStorage.removeItem(MOVIES_CACHE_SEARCH_TERM_KEY);
-    return { movies: false, searchTerm: '', isShort: false };
-  }
-};
 
 function App() {
   const cache = getMoviesCache();
   const history = useHistory(); // создаем константу для истории
   const [isLoading, setIsLoading] = useState(false); // ожидание данных с сервера для дезактивации кнопки сабмита формы
   const [errorToolTip, setErrorToolTip] = useState(false); // попап с ошибками
+  const [succesToolTip, setSuccesToolTip] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false); // состояние залогинен или нет
   const [currentUser, setCurrentUser] = useState({}); //создание стейта для currentUser
   const [ready, setReady] = useState(false); // начальная подгрузка юзера при обновлении
@@ -101,7 +80,7 @@ function App() {
 
   //Начальная загрузка данных о пользователе
   useEffect(() => {
-    if (localStorage.getItem('token')) {
+    if (localStorage.getItem(TOKEN)) {
       mainApi
         .getUserInfo()
         .then((userData) => {
@@ -192,8 +171,12 @@ function App() {
   }
   //LOG OUT
   function handleLogout() {
-    localStorage.removeItem('token');
+    localStorage.removeItem(TOKEN);
     mainApi.updateToken(null);
+    localStorage.removeItem(MOVIES_CACHE_KEY);
+    localStorage.removeItem(MOVIES_CACHE_SEARCH_TERM_KEY);
+    setSavedMovies(false);
+    setMovies(false);
     setLoggedIn(false);
     history.push('/');
   }
@@ -201,7 +184,10 @@ function App() {
   function handleUpdateUser(name, email) {
     return mainApi
       .updateProfile({ name, email })
-      .then((userData) => setCurrentUser(userData))
+      .then((userData) => {
+        setCurrentUser(userData);
+        setSuccesToolTip('Успешно!');
+      })
       .catch((err) => {
         console.log(err);
         setErrorToolTip(err);
@@ -213,7 +199,14 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <div className="page__content">
-          <ToolTip err={errorToolTip} onClose={() => setErrorToolTip(false)} />
+          <ToolTip
+            err={errorToolTip}
+            succes={succesToolTip}
+            onClose={() => {
+              setErrorToolTip(false);
+              setSuccesToolTip(false);
+            }}
+          />
           <Switch>
             <Route exact path="/">
               <Header loggedIn={loggedIn} />
