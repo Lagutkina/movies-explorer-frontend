@@ -1,5 +1,9 @@
 import './LoadMoreButton.css';
-function LoadMoreButton() {
-  return <button className="loadmore-btn">Ещё</button>;
+function LoadMoreButton(props) {
+  return (
+    <button onClick={props.onClick} className="loadmore-btn">
+      Ещё
+    </button>
+  );
 }
 export default LoadMoreButton;

@@ -106,6 +106,9 @@
   cursor: pointer;
   opacity: 0.7;
 }
+.search-form__searchbtn:disabled {
+  background: #b4b0b0;
+}
 
 @media screen and (min-width: 768px) {
   .search-form__checkbox-wrapper {

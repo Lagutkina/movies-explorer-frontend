@@ -1,51 +1,71 @@
-.input__field{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-}
-.input__label{
-    font-style: normal;
-    font-weight: 400;
-    font-size: 10px;
-    line-height: 12px;
-    color: #A0A0A0;
-}
-.input{
-    width: 100%;
-    padding: 0;
-    border: 0;
-    height: 46px;
-    background: #F9F9F9;
-    border-radius: 8px;
-    margin: 10px 0;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 13px;
-    line-height: 16px;
-    padding: 15px;
-    box-sizing: border-box;
-    
+.input__field {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
-.input:focus{
-    outline: 1.5px solid #2BE080;
-    font-weight: 500;
-
+.input__label {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  color: #a0a0a0;
 }
 
-.input_error{
-    color: #FF4062;
+.input {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  height: 46px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  margin: 10px 0;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+  padding: 15px;
+  box-sizing: border-box;
 }
-.input_error:focus{
-    outline: 1.5px solid #FF4062;
-    font-weight: 500;
 
+.input:focus {
+  outline: 1.5px solid #2be080;
+  font-weight: 500;
 }
 
-.input__message{
-    font-weight: 400;
-    font-size: 10px;
-    line-height: 12px;
-    color: #FF4062;
-    margin-bottom: 10px;
+.input_error {
+  color: #ff4062;
+}
+.input_error:focus {
+  outline: 1.5px solid #ff4062;
+  font-weight: 500;
+}
+
+.input__message {
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  color: #ff4062;
+  margin-bottom: 10px;
+}
+
+.input__field_readonly {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding: 17px 0;
+  box-sizing: border-box;
+  border-bottom: 1px solid #e8e8e8;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+  align-items: center;
+}
+.input__field_readonly:last-of-type {
+  border-bottom: none;
+}
+.input_readonly {
+  padding: 0;
+  border: 0;
+  text-align: end;
 }

@@ -4,7 +4,7 @@ import Link from '../Link/Link';
 function WelcomeForm(props) {
   return (
     <div className="welcomeform">
-      <form className="welcomeform__form">
+      <form className="welcomeform__form" onSubmit={props.onSubmit}>
         <div className="welcomeform__title-wrapper">
           <img className="welcomeform__logo" alt="логотип" src={headerLogo} />
           <h2 className="welcomeform__title">{props.title}</h2>
@@ -15,6 +15,7 @@ function WelcomeForm(props) {
             type="submit"
             className="welcomeform__submit-btn"
             value={props.submitValue}
+            disabled={props.isLoading || !props.isValid}
           />
           <div className="welcomeform__bottom-text">
             <div className="welcomeform__bottom-question">{props.question}</div>
@@ -29,3 +30,4 @@ function WelcomeForm(props) {
 }
 
 export default WelcomeForm;
+// isLoading;

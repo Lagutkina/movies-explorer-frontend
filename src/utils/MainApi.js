@@ -1,33 +1,41 @@
 class MainApi {
   constructor(options) {
     this._baseUrl = options.baseUrl;
-    this._headers = options.headers;
+    this._token = options.token;
   }
-
+  updateToken(token) {
+    this._token = token;
+  }
   _fetch(method, path, body) {
     return fetch(`${this._baseUrl}/${path}`, {
       method,
-      headers: this._headers,
+      headers: {
+        authorization: this._token ? `Bearer ${this._token}` : undefined,
+        'Content-Type': 'application/json',
+      },
       body: body ? JSON.stringify(body) : undefined,
     }).then((res) => {
       if (res.ok) {
         return res.json();
       }
-      return Promise.reject(`Ошибка: ${res.status}`);
+      return res.json().then((result) => Promise.reject(result.message));
     });
   }
-  signUp(name, email, password) {
-    return this._fetch('POST', 'signup', { name, email, password });
-  }
-
-  signIn(email, password) {
-    return this._fetch('POST', 'signin', { email, password }).then((data) => {
+  signUp(userData) {
+    return this._fetch('POST', 'signup', userData).then((data) => {
       if (data.token) {
         localStorage.setItem('token', data.token);
-        this._headers = {
-          authorization: `Bearer ${data.token}`,
-          'Content-Type': 'application/json',
-        };
+        this._token = data.token;
+      }
+      return data;
+    });
+  }
+
+  signIn(userData) {
+    return this._fetch('POST', 'signin', userData).then((data) => {
+      if (data.token) {
+        localStorage.setItem('token', data.token);
+        this._token = data.token;
       }
       return data;
     });
@@ -35,8 +43,8 @@ class MainApi {
   getUserInfo() {
     return this._fetch('GET', 'users/me');
   }
-  updateProfile(name, email) {
-    return this._fetch('PATCH', 'users/me', { name, email });
+  updateProfile(userData) {
+    return this._fetch('PATCH', 'users/me', userData);
   }
   getMovies() {
     return this._fetch('GET', 'movies');
@@ -49,15 +57,6 @@ class MainApi {
     return this._fetch('DELETE', `movies/${movieId}`);
   }
 
-  addLike(cardId) {
-    return this._fetch('PUT', `cards/${cardId}/likes`);
-  }
-  deleteLike(cardId) {
-    return this._fetch('DELETE', `cards/${cardId}/likes`);
-  }
-  updateAvatar(avatar) {
-    return this._fetch('PATCH', 'users/me/avatar', { avatar });
-  }
   changeLikeCardStatus(cardId, isLike) {
     if (isLike) {
       return this.addLike(cardId);
@@ -69,7 +68,5 @@ class MainApi {
 
 export default new MainApi({
   baseUrl: 'http://localhost:3002',
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  token: localStorage.getItem('token'),
 });
