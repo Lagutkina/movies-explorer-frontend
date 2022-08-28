@@ -16,17 +16,18 @@ class MainApi {
       },
       body: body ? JSON.stringify(body) : undefined,
     })
+      .catch((e) => {
+        console.log(e);
+        return Promise.reject(
+          'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'
+        );
+      })
       .then((res) => {
         if (res.ok) {
           return res.json();
         }
         // Есть проблема с результатом то возвращаем ошибку
         return res.json().then((result) => Promise.reject(result.message));
-      })
-      .catch((e) => {
-        return Promise.reject(
-          'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'
-        );
       });
   }
   signUp(userData) {

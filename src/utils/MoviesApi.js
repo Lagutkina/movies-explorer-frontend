@@ -4,17 +4,17 @@ class MoviesApi {
   }
   getMovies() {
     return fetch(this._url)
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        throw new Error();
-      })
       .catch((e) => {
         console.log(e);
         return Promise.reject(
           'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'
         );
+      })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        throw new Error();
       });
   }
 }
