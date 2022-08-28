@@ -13,21 +13,20 @@ import Profile from '../Profile/Profile';
 import PageNotFound from '../PageNotFound/PageNotFound';
 import moviesApi from '../../utils/MoviesApi';
 import mainApi from '../../utils/MainApi';
-import filterMovies from '../../utils/filter';
+import { transformMoviesData } from '../../utils/filter';
 import ToolTip from '../ToolTip/ToolTip';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import { setMoviesCache, getMoviesCache } from '../../utils/moviesCache';
 import {
-  MOVIES,
-  SAVED,
-  MOVIES_CACHE_KEY,
   MOVIES_CACHE_SEARCH_TERM_KEY,
+  MOVIES_CACHE_SEARCH_CHECK,
   TOKEN,
 } from '../../utils/constants';
 
 import './App.css';
 
 function App() {
+  // сохраненные состояния о последнем поиске
   const cache = getMoviesCache();
   const history = useHistory(); // создаем константу для истории
   const [isLoading, setIsLoading] = useState(false); // ожидание данных с сервера для дезактивации кнопки сабмита формы
@@ -36,16 +35,24 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false); // состояние залогинен или нет
   const [currentUser, setCurrentUser] = useState({}); //создание стейта для currentUser
   const [ready, setReady] = useState(false); // начальная подгрузка юзера при обновлении
-  const [movies, setMovies] = useState(cache.movies);
+  // Полный список фильмов с сервера
+  const [movies, setMovies] = useState(false);
+  // Полный список сохраненных фильмов из апи
   const [savedMovies, setSavedMovies] = useState(false);
+  // Список айди сохраненных фильмов
   const [savedMoviesIds, setSavedMoviesIds] = useState([]);
+  // Текущий поисковый запрос для фильмов
+  const [moviesSearchTerm, setMoviesSearchTerm] = useState(cache.searchTerm);
+  const [moviesSearchShort, setMoviesSearchShort] = useState(cache.isShort);
 
   //Лайки и добавление
   function handleSaveMovie(movieData) {
     mainApi
       .addNewMovie(movieData)
       .then(() => {
-        loadSavedMovies();
+        const newSavedMovies = [...savedMovies, movieData];
+        setSavedMoviesIds(newSavedMovies.map((movie) => movie.movieId));
+        setSavedMovies(newSavedMovies);
       })
       .catch((err) => {
         console.log(err);
@@ -57,16 +64,21 @@ function App() {
     mainApi
       .deleteMovie(movieId)
       .then(() => {
-        loadSavedMovies();
+        const newSavedMovies = savedMovies.filter(
+          (movie) => movie.movieId !== movieId
+        );
+        setSavedMoviesIds(newSavedMovies.map((movie) => movie.movieId));
+        setSavedMovies(newSavedMovies);
       })
       .catch((err) => {
         console.log(err);
         setErrorToolTip(err);
       });
   }
-
+  // Загрузка сохраненных фильмов из бекенда
   function loadSavedMovies() {
-    mainApi
+    setIsLoading(true);
+    return mainApi
       .getMovies()
       .then((movies) => {
         setSavedMoviesIds(movies.map((movie) => movie.movieId));
@@ -75,7 +87,21 @@ function App() {
       .catch((err) => {
         console.log(err);
         setErrorToolTip(err);
-      });
+      })
+      .finally(() => setIsLoading(false));
+  }
+  // Загрузка  фильмов с сервера
+  function loadMovies() {
+    setIsLoading(true);
+    return moviesApi
+      .getMovies()
+      .then((res) => {
+        setMovies(transformMoviesData(res));
+      })
+      .catch((err) => {
+        setErrorToolTip(err);
+      })
+      .finally(() => setIsLoading(false));
   }
 
   //Начальная загрузка данных о пользователе
@@ -87,12 +113,17 @@ function App() {
           setCurrentUser(userData);
           setLoggedIn(true);
         })
-        .catch((err) => console.log(err))
+        .catch((err) => {
+          console.log(err);
+          // Комментарий: при неправильном токене происходит редирект на страницу входа
+          history.push('/signin');
+        })
         .finally(() => setReady(true));
     } else {
       setReady(true);
     }
   }, []);
+
   //загрузка карточек
   useEffect(() => {
     if (loggedIn) {
@@ -100,38 +131,29 @@ function App() {
     }
   }, [loggedIn]);
 
+  //загрузка карточек
+  useEffect(() => {
+    if (moviesSearchTerm) {
+      loadMovies();
+    }
+  }, [moviesSearchTerm]);
+
   //Поиск карточек
-  function handleSearch(source, searchTerm, isShort) {
+  function handleSearch(searchTerm, isShort) {
     if (!searchTerm) {
       return setErrorToolTip('Нужно ввести ключевое слово');
     }
-    if (source === MOVIES) {
-      setIsLoading(true);
-      moviesApi
-        .getMovies()
-        .then((res) => {
-          const filtered = filterMovies(res, searchTerm, isShort, true);
-          setMoviesCache(filtered, searchTerm);
-          setMovies(filtered);
-        })
-        .catch((err) => {
-          setErrorToolTip(err);
-        })
-        .finally(() => setIsLoading(false));
-    } else if (source === SAVED) {
-      setIsLoading(true);
 
-      mainApi
-        .getMovies()
-        .then((res) => {
-          const filtered = filterMovies(res, searchTerm, isShort, false);
-          setSavedMoviesIds(res.map((movie) => movie.movieId));
-          setSavedMovies(filtered);
-        })
-        .catch((err) => {
-          setErrorToolTip(err);
-        })
-        .finally(() => setIsLoading(false));
+    // Кешируем поисковые фильтры
+    setMoviesCache(searchTerm, isShort);
+
+    // Устанавливаем поисковые фильтры
+    setMoviesSearchTerm(searchTerm);
+    setMoviesSearchShort(isShort);
+
+    // Загружаем данные с сервера если еще не сделали этого раньше
+    if (!movies) {
+      loadMovies();
     }
   }
 
@@ -173,8 +195,8 @@ function App() {
   function handleLogout() {
     localStorage.removeItem(TOKEN);
     mainApi.updateToken(null);
-    localStorage.removeItem(MOVIES_CACHE_KEY);
     localStorage.removeItem(MOVIES_CACHE_SEARCH_TERM_KEY);
+    localStorage.removeItem(MOVIES_CACHE_SEARCH_CHECK);
     setSavedMovies(false);
     setMovies(false);
     setLoggedIn(false);
@@ -194,7 +216,6 @@ function App() {
         throw err;
       });
   }
-
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
@@ -228,8 +249,8 @@ function App() {
                 isLoading={isLoading}
                 onLike={handleSaveMovie}
                 onRemove={handleRemoveMovie}
-                searchTerm={cache.searchTerm}
-                isShort={cache.isShort}
+                searchTerm={moviesSearchTerm}
+                isShort={moviesSearchShort}
               />
               <Footer />
             </ProtectedRoute>
@@ -258,12 +279,15 @@ function App() {
               <Header loggedIn={loggedIn} />
               <Profile onLogout={handleLogout} onUpdate={handleUpdateUser} />
             </ProtectedRoute>
-            <Route exact path="/signin">
-              <Login isLoading={isLoading} onLogin={handleAuthorize} />
-            </Route>
-            <Route exact path="/signup">
-              <Register onRegister={handleRegister} isLoading={isLoading} />
-            </Route>
+            {!loggedIn &&
+              ready && [
+                <Route exact path="/signin">
+                  <Login isLoading={isLoading} onLogin={handleAuthorize} />
+                </Route>,
+                <Route exact path="/signup">
+                  <Register onRegister={handleRegister} isLoading={isLoading} />
+                </Route>,
+              ]}
             <Route path="/">
               <PageNotFound />
             </Route>

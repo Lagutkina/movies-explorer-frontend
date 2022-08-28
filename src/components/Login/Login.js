@@ -33,13 +33,21 @@ function Login(props) {
       isLoading={props.isLoading}
       isValid={valid.email && valid.password}
     >
-      <Input title="E-mail" name="email" type="email" onChange={handleChange} />
+      <Input
+        title="E-mail"
+        name="email"
+        type="email"
+        pattern='^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
+        onChange={handleChange}
+        disabled={props.isLoading}
+      />
       <Input
         title="Пароль"
         name="password"
         type="password"
         minlength="6"
         onChange={handleChange}
+        disabled={props.isLoading}
       />
     </WelcomeForm>
   );

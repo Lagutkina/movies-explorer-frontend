@@ -1,12 +1,14 @@
+// Поиск может производитьсы по многим полям но задача искать только в иимении
 const movieKeys = [
   'nameRU',
   'nameEN',
+  /*
   'director',
   'country',
   'year',
-  'description',
+  'description',*/
 ];
-function filterMovies(movies, searchTerm, isShort, transform) {
+export function filterMovies(movies, searchTerm, isShort) {
   const term = searchTerm.toLowerCase();
   const filtered = movies.filter((movie) => {
     if (isShort) {
@@ -18,9 +20,9 @@ function filterMovies(movies, searchTerm, isShort, transform) {
     return false;
   });
 
-  return transform ? transformMoviesData(filtered) : filtered;
+  return filtered;
 }
-function transformMoviesData(movies) {
+export function transformMoviesData(movies) {
   return movies.map((movie) => ({
     country: movie.country || '',
     director: movie.director || '',

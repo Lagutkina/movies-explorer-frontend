@@ -1,15 +1,23 @@
-import './SearchForm.css';
+import { useState } from 'react';
+
 import searchBtn from '../../images/seachFormSeachbtn.svg';
 import searchBtn_grey from '../../images/seachFormSeachbtn_grey.svg';
-import { useState } from 'react';
+import { SAVED } from '../../utils/constants';
+
+import './SearchForm.css';
+
 function SearchForm(props) {
   const [activeCheckbox, setActiveCheckbox] = useState(props.short || false);
   const [value, setValue] = useState(props.term || '');
+
   function handleInputChange(evt) {
     setValue(evt.target.value);
   }
   function handleCheckboxChange(evt) {
-    if (value) {
+    if (props.isLoading) {
+      return;
+    }
+    if (value || props.type === SAVED) {
       props.onSearch(value, !activeCheckbox);
     }
     setActiveCheckbox(!activeCheckbox);
@@ -20,6 +28,9 @@ function SearchForm(props) {
       className="search-form"
       onSubmit={(e) => {
         e.preventDefault();
+        if (props.isLoading) {
+          return;
+        }
         props.onSearch(value, activeCheckbox);
       }}
     >
@@ -33,6 +44,7 @@ function SearchForm(props) {
           type="text"
           placeholder="Фильм"
           value={value}
+          disabled={props.isLoading}
           className="search-form__field"
           onChange={handleInputChange}
         />

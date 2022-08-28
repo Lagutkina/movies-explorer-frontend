@@ -1,12 +1,15 @@
 import './WelcomeForm.css';
 import headerLogo from '../../images/headerLogo.svg';
 import Link from '../Link/Link';
+
 function WelcomeForm(props) {
   return (
     <main className="welcomeform">
       <form className="welcomeform__form" onSubmit={props.onSubmit}>
         <div className="welcomeform__title-wrapper">
-          <img className="welcomeform__logo" alt="логотип" src={headerLogo} />
+          <Link to="/">
+            <img className="welcomeform__logo" alt="логотип" src={headerLogo} />
+          </Link>
           <h2 className="welcomeform__title">{props.title}</h2>
         </div>
         <div className="welcomeform__inputs-holder">{props.children}</div>

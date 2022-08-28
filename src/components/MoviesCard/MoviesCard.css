@@ -65,7 +65,8 @@
   background-repeat: no-repeat;
   flex-shrink: 0;
   margin-top: -4px;
-  opacity: 0;
+  opacity: 1;
+  cursor: pointer;
   transition-duration: 300ms;
 }
 
@@ -85,6 +86,10 @@
 }
 
 @media screen and (min-width: 768px) {
+  .card__delete {
+    opacity: 0;
+    cursor: default;
+  }
   .card__name {
     font-size: 13px;
     line-height: 16px;

@@ -2,17 +2,18 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Preloader from '../Preloader/Preloader';
 import SearchForm from '../SearchForm/SearchForm';
 import { MOVIES } from '../../utils/constants';
+import { filterMovies } from '../../utils/filter';
 
 import './Movies.css';
 
 function Movies(props) {
-  const handleSearch = (...args) => {
-    props.onSearch(MOVIES, ...args);
-  };
+  const filteredMovies =
+    props.movies && filterMovies(props.movies, props.searchTerm, props.isShort);
   return (
     <main className="movies">
       <SearchForm
-        onSearch={handleSearch}
+        isLoading={props.isLoading}
+        onSearch={props.onSearch}
         term={props.searchTerm}
         short={props.isShort}
         key={`${props.searchTerm}-${props.isShort}`}
@@ -20,7 +21,7 @@ function Movies(props) {
       {props.movies && !props.isLoading && (
         <MoviesCardList
           type={MOVIES}
-          movies={props.movies}
+          movies={filteredMovies}
           savedMoviesIds={props.savedMoviesIds}
           onLike={props.onLike}
           onRemove={props.onRemove}

@@ -1,27 +1,23 @@
 import {
-  MOVIES_CACHE_KEY,
   MOVIES_CACHE_SEARCH_TERM_KEY,
   MOVIES_CACHE_SEARCH_CHECK,
 } from './constants';
 
-export const setMoviesCache = (movies, searchTerm, isShort) => {
+export const setMoviesCache = (searchTerm, isShort) => {
   localStorage.setItem(MOVIES_CACHE_SEARCH_TERM_KEY, searchTerm);
-  localStorage.setItem(MOVIES_CACHE_SEARCH_CHECK, isShort);
-  localStorage.setItem(MOVIES_CACHE_KEY, JSON.stringify(movies));
+  isShort
+    ? localStorage.setItem(MOVIES_CACHE_SEARCH_CHECK, true)
+    : localStorage.removeItem(MOVIES_CACHE_SEARCH_CHECK);
 };
 
 export const getMoviesCache = () => {
   try {
-    const movies = JSON.parse(localStorage.getItem(MOVIES_CACHE_KEY));
-    const searchTerm = localStorage.getItem(MOVIES_CACHE_SEARCH_TERM_KEY);
-    const isShort = localStorage.getItem(MOVIES_CACHE_SEARCH_CHECK);
-    if (!Array.isArray(movies)) {
-      throw new Error();
-    }
-    return { movies, searchTerm, isShort };
+    const searchTerm = localStorage.getItem(MOVIES_CACHE_SEARCH_TERM_KEY) || '';
+    const isShort = !!localStorage.getItem(MOVIES_CACHE_SEARCH_CHECK);
+    return { searchTerm, isShort };
   } catch (e) {
-    localStorage.removeItem(MOVIES_CACHE_KEY);
     localStorage.removeItem(MOVIES_CACHE_SEARCH_TERM_KEY);
-    return { movies: false, searchTerm: '', isShort: false };
+    localStorage.removeItem(MOVIES_CACHE_SEARCH_CHECK);
+    return { searchTerm: '', isShort: false };
   }
 };
