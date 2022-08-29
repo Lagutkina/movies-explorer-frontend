@@ -3,7 +3,7 @@ import headerLogo from '../../images/headerLogo.svg';
 import headerMenu from '../../images/headerMenu.png';
 import AccountButton from '../AccountButton/AccountButton';
 import { useState } from 'react';
-import { useRouteMatch, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import Link from '../Link/Link';
 import Navigation from '../Navvigation/Navigation';
 function Header(props) {
@@ -14,13 +14,12 @@ function Header(props) {
   function closeNavigation() {
     setIsNavigationOpen(false);
   }
-  const matchMain = useRouteMatch({ path: '/', exact: true });
   return (
     <header className="header">
       <Link to="/">
         <img className="header__logo" src={headerLogo} alt="логотип" />
       </Link>
-      {!matchMain && (
+      {props.loggedIn && (
         <ul className="header__logged-navigation">
           <li>
             <NavLink
@@ -42,8 +41,7 @@ function Header(props) {
           </li>
         </ul>
       )}
-
-      {matchMain && (
+      {!props.loggedIn && (
         <ul className="header__main-navigation">
           <li>
             <Link to="/signup" className="header__signup-link">
@@ -57,7 +55,7 @@ function Header(props) {
           </li>
         </ul>
       )}
-      {!matchMain && (
+      {props.loggedIn && (
         <>
           <div>
             <img
